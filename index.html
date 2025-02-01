@@ -155,7 +155,9 @@
         <span>Famiglia Encicliati</span> <!-- Slogan o titolo -->
         <a href="https://famienc.github.io/gruppo1/" target="_blank">gruppo1</a>
         <a href="https://famienc.github.io/gruppo2/" target="_blank">gruppo2</a>
-        <a href="https://www.instagram.com/prima_il_veneto/" target="_blank">Instagram</a>
+        <!--    <a href="https://www.instagram.com/prima_il_veneto/" target="_blank">Instagram</a>     -->
+		<a href="video.html" target="_blank">Video</a>
+
     </div>
 
     <!-- Slider -->
@@ -251,18 +253,24 @@
             playAudio();
         };
 
-        const playAudio = () => {
-            if (audioEnabled) {
-                audios.forEach((audio, i) => {
-                    if (i === currentIndex) {
-                        audio.play().catch(error => alert('Audio playback failed:' + error)); /* Modifica: Aggiunto alert in caso di errore */
-                    } else {
-                        audio.pause();
-                        audio.currentTime = 0;
-                    }
-                });
-            }
-        };
+		const playAudio = () => {
+			if (audioEnabled) {
+				audios.forEach((audio, i) => {
+					if (i === currentIndex) {
+						audio.play()
+							.catch(error => console.error('Errore nella riproduzione audio:', error)); /* Aggiunto alert in caso di errore */
+
+						// l'audio è ripristinato dopo la fine della riproduzione
+						audio.onended = () => {
+							audio.currentTime = 0; // Reset audio
+						};
+					} else {
+						audio.pause();
+						audio.currentTime = 0;
+					}
+				});
+			}
+		};
 
         audioToggle.addEventListener('click', () => {
             audioEnabled = !audioEnabled;
